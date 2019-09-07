@@ -17,4 +17,7 @@ module.exports = app => {
     app.get('/api/getAllData', (req, res) => {
         testController.getAllData(req, res);
     })
+    app.post('/api/createUser', (req, res) => {
+        testController.createUser(req, res);
+    })
 }
