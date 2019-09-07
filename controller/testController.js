@@ -19,12 +19,16 @@ exports.createUser = async (req, res) => {
     const { errors, isValid } = registerValid(req.body);
     if(!isValid)
     {
-        return res.status(400).json(errors);
+        return res.status(400).json({
+            isSuccess: false,
+            errors
+        });
     }
     const user = await User.findOne({email: req.body.email});
     if(user)
     {
         return res.status(400).json({
+            isSuccess: false,
             email: 'Email đã tồn tại'
         });
     }
@@ -55,7 +59,9 @@ exports.createUser = async (req, res) => {
                 {
                     newUser.password = hash;
                     newUser.save().then(user => {
-                        res.json(user);
+                        res.json({
+                            isSuccess: true
+                        });
                     });
                 }
             });
