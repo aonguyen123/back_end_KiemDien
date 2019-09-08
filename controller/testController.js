@@ -27,11 +27,11 @@ exports.createUser = async (req, res) => {
     const user = await User.findOne({email: req.body.email});
     if(user)
     {
-        const error = {};
-        error.email = "email đã tồn tại";
+        const errors = {};
+        errors.email = "email đã tồn tại";
         return res.status(200).json({
             isSuccess: false,
-            error
+            errors
         });
     }
     const avatar = gravatar.url(req.body.email, {
