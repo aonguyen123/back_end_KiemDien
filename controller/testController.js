@@ -2,6 +2,8 @@ const registerValid = require('./../validation/register');
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const User = require('./../model/user');
+const SV = require('./../model/testUser');
+const validSV = require('./../validation/testSV');
 
 exports.getAllData = async (req, res) => {
     const listUser = await User.find();
@@ -69,4 +71,47 @@ exports.createUser = async (req, res) => {
             });
         }
     });
+}
+exports.createSV = async (req, res) => {
+    const { errors, isValid } = validSV(req.body);
+    if(!isValid)
+    {
+        return res.json(errors);
+    }
+    const mssv = await SV.findOne({mssv: req.body.mssv});
+    if(mssv)
+    {
+        return res.json({
+            success: false,
+            msg: 'Mã số sinh viên đã tồn tại'
+        })
+    }
+    const newSV = new SV({
+        mssv: req.body.mssv,
+        ten: req.body.ten
+    });
+    newSV.save().then(sv => {
+        res.json(sv);
+    });
+};
+exports.checkSV = async (req, res) => {
+    const { mssv } = req.query;
+    if(!mssv)
+    {
+        return res.json({
+            msg: 'Mã số sinh viên không tồn tại'
+        })
+    }
+    const sv = await SV.findOne({mssv});
+    if(!sv)
+    {
+        return res.json({
+            isInList: false,
+            msg: 'not found'
+        })
+    }
+    res.json({
+        isInList: true,
+        msg: 'in list'
+    })
 }

@@ -20,4 +20,10 @@ module.exports = app => {
     app.post('/api/createUser', (req, res) => {
         testController.createUser(req, res);
     })
+    app.post('/api/createSV', (req, res) => {
+        testController.createSV(req, res);
+    });
+    app.get('/api/checkSV', (req, res) => {
+        testController.checkSV(req, res);
+    })
 }
