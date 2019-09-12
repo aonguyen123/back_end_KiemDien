@@ -3,7 +3,7 @@ const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const User = require('./../model/user');
 const SV = require('./../model/testUser');
-const validSV = require('./../validation/testSV');
+const testSV = require('./../validation/testSV');
 
 exports.getAllData = async (req, res) => {
     const listUser = await User.find();
@@ -73,7 +73,7 @@ exports.createUser = async (req, res) => {
     });
 }
 exports.createSV = async (req, res) => {
-    const { errors, isValid } = validSV(req.body);
+    const { errors, isValid } = testSV.checkSV(req.body);
     if(!isValid)
     {
         return res.json(errors);
@@ -88,7 +88,8 @@ exports.createSV = async (req, res) => {
     }
     const newSV = new SV({
         mssv: req.body.mssv,
-        ten: req.body.ten
+        ten: req.body.ten,
+        checkTime: req.body.checkTime
     });
     newSV.save().then(sv => {
         res.json(sv);
@@ -113,5 +114,22 @@ exports.checkSV = async (req, res) => {
     res.json({
         isInList: true,
         msg: 'in list'
+    })
+};
+exports.updateTime = async (req, res) => {
+    const { isValid, errors } = testSV.checkUpdateTime(req.body);
+    if(!isValid)
+    {
+        return res.json(errors);
+    }
+    const sv = await SV.findOneAndUpdate({mssv: req.body.mssv}, {checkTime: req.body.checkTime});
+    if(!sv)
+    {
+        return res.json({
+            msg: 'not found'
+        })
+    }
+    res.json({
+        msg: 'updated'
     })
 }

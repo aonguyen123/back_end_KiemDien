@@ -26,4 +26,7 @@ module.exports = app => {
     app.get('/api/checkSV', (req, res) => {
         testController.checkSV(req, res);
     })
+    app.put('/api/updateTime', (req, res) => {
+        testController.updateTime(req, res)
+    });
 }

@@ -9,7 +9,11 @@ const svSchema = new Scheme({
     ten: {
         type: String,
         required: true
-    }
+    },
+    checkTime: {
+        type: String,
+        required: true
+    }    
 });
 const SV = mongoose.model('SV', svSchema);
 module.exports = SV;

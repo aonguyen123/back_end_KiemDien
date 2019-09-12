@@ -7,7 +7,7 @@ const cors = require('cors');
 const config = require('./config/db');
 const userRouter = require('./routes/user');
 
-mongoose.connect(config.DB,{ useNewUrlParser: true }).then(() => {
+mongoose.connect(config.DB,{ useNewUrlParser: true, useFindAndModify: false }).then(() => {
     console.log('database has connected');
 },
 err => {
