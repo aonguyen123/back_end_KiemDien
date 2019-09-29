@@ -23,6 +23,7 @@ const app = express();
 
 app.use(passport.initialize());
 require('./config/passport')(passport);
+require('./config/passportUser')(passport);
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

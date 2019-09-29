@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const userValid = require('./../../validation/user/login');
 const User = require('./../../model/user');
+const updatePasswordValid = require('./../../validation/user/updatePassword');
 
 exports.login = async (req, res) => {
     const { isValid, errors } = userValid(req.body);
@@ -55,4 +56,42 @@ exports.login = async (req, res) => {
             user
         });
     });
+};
+exports.updatePassword = async (req, res) => {
+    const { isValid, errors } = updatePasswordValid(req.body);
+    if(!isValid)
+    {
+        return res.json({
+            isSuccess: false,
+            errors
+        })
+    }
+    const salt = await bcrypt.genSalt(10);
+    if(!salt)
+    {
+        return res.json({
+            isSuccess: false,
+            errors: 'bcrypt fail'
+        })
+    }
+    const hash = await bcrypt.hash(req.body.password, salt);
+    if(!hash)
+    {
+        return res.json({
+            isSuccess: false,
+            errors: 'hash fail'
+        })
+    }
+    const user = await User.findByIdAndUpdate(req.body._id, {password: hash});
+    if(!user)
+    {
+        return res.json({
+            isSuccess: false,
+            errors: 'update password fail'
+        })
+    }
+    res.json({
+        isSuccess: true,
+        user
+    })
 };
