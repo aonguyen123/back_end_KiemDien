@@ -5,10 +5,12 @@ const morgan = require('morgan');
 const passport = require('passport');
 const cors = require('cors');
 const config = require('./config/db');
+
 const adminRouter = require('./admin/routes/admin');
 const cityRouter = require('./admin/routes/city');
-const userRouter = require('./user/routes/test');
+const userRouter = require('./user/routes/user');
 const accountRouter = require('./admin/routes/account');
+const usersRouter = require('./admin/routes/users');
 
 mongoose.connect(config.DB,{ useNewUrlParser: true, useFindAndModify: false }).then(() => {
     console.log('database has connected');
@@ -30,5 +32,5 @@ const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
     console.log(`Server listened port ${PORT}`);
 })
-app.use('/api/admin', [adminRouter, cityRouter, accountRouter]);
-app.use('/api/user', userRouter);
+app.use('/api/admin', [adminRouter, cityRouter, accountRouter, usersRouter]);
+app.use('/api/user', [userRouter]);

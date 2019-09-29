@@ -6,7 +6,7 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    fisrtName: {
+    firstName: {
         type: String,
         required: true
     },
@@ -27,11 +27,12 @@ const UserSchema = new Schema({
         required: true,
     },
     avatar: {
-        type: String
+        type: String,
+        default: ''
     },
     gioitinh: {
-        type: Date,
-        default: Date.now,
+        type: Boolean,
+        required: true
     },
     sdt: {
         type: Number,
