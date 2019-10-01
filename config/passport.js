@@ -9,7 +9,7 @@ opts.jwtFromRequest = ExtractJWT.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = 'secret';
 
 module.exports = passport => {
-    passport.use(new JWTStrategy(opts, (jwt_payload, done) => {
+    passport.use('admin-authz', new JWTStrategy(opts, (jwt_payload, done) => {
         Admin.findById(jwt_payload._id).then(admin => {
             if(admin)
             {

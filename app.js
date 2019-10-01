@@ -11,6 +11,7 @@ const cityRouter = require('./admin/routes/city');
 const userRouter = require('./user/routes/user');
 const accountRouter = require('./admin/routes/account');
 const usersRouter = require('./admin/routes/users');
+const classesRouter = require('./admin/routes/classes');
 
 mongoose.connect(config.DB,{ useNewUrlParser: true, useFindAndModify: false }).then(() => {
     console.log('database has connected');
@@ -33,5 +34,5 @@ const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
     console.log(`Server listened port ${PORT}`);
 })
-app.use('/api/admin', [adminRouter, cityRouter, accountRouter, usersRouter]);
+app.use('/api/admin', [adminRouter, cityRouter, accountRouter, usersRouter, classesRouter]);
 app.use('/api/user', [userRouter]);

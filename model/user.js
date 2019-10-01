@@ -35,7 +35,7 @@ const UserSchema = new Schema({
         required: true
     },
     sdt: {
-        type: Number,
+        type: String,
         required: true
     },
     ngaydangki: {
