@@ -4,8 +4,7 @@ const isEmpty = require('../is_empty');
 module.exports = data => {
     let errors = {};
     data.maGV = !isEmpty(data.maGV) ? data.maGV : '';
-    data.firstName = !isEmpty(data.firstName) ? data.firstName : '';
-    data.lastName = !isEmpty(data.lastName) ? data.lastName : '';
+    data.name = !isEmpty(data.name) ? data.name : '';
     data.email = !isEmpty(data.email) ? data.email : '';
     data.password = !isEmpty(data.password) ? data.password : '';
     data.password_confirm = !isEmpty(data.password_confirm) ? data.password_confirm : '';
@@ -21,21 +20,13 @@ module.exports = data => {
     {
         errors.maGV = 'Mã giảng viên 10 kí tự';
     }
-    if(!validator.isLength(data.firstName, { min: 2, max: 10 }))
+    // if(!validator.isLength(data.name, { min: 2, max: 10 }))
+    // {
+    //     errors.name = 'Tên từ 2 đến 10 kí tự';
+    // }
+    if(validator.isEmpty(data.name))
     {
-        errors.firstName = 'Họ từ 2 đến 10 kí tự';
-    }
-    if(validator.isEmpty(data.firstName))
-    {
-        errors.firstName = 'Họ không được để trống';
-    }
-    if(!validator.isLength(data.lastName, { min: 2, max: 20 }))
-    {
-        errors.lastName = 'Tên từ 2 đến 20 kí tự';
-    }
-    if(validator.isEmpty(data.lastName))
-    {
-        errors.lastName = 'Tên không được để trống';
+        errors.name = 'Tên không được để trống';
     }
     if(!validator.isEmail(data.email))
     {

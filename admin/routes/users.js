@@ -1,13 +1,14 @@
+const passport = require('passport');
 const Router = require('express').Router();
 const usersController = require('./../controller/users');
 
-Router.post('/createUser', (req, res) => {
+Router.post('/createUser', passport.authorize('admin-authz', {session: false}), (req, res) => {
     usersController.createUser(req, res);
 });
-Router.get('/getUsers', (req, res) => {
+Router.get('/getUsers', passport.authorize('admin-authz', {session: false}), (req, res) => {
     usersController.getUsers(req, res);
 });
-Router.get('/usersPagination', (req, res) => {
-    usersController.usersPagination(req, res)
-})
+Router.delete('/deleteUsers', passport.authorize('admin-authz', {session: false}), (req, res) => {
+    usersController.deleteUser(req, res);
+});
 module.exports = Router;

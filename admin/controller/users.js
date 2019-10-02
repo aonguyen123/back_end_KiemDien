@@ -26,8 +26,7 @@ exports.createUser = async (req, res) => {
     }
     const newUser = new User({
         maGV: req.body.maGV,
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
+        name: req.body.name,
         email: req.body.email,
         password: req.body.password,
         ngaysinh: req.body.ngaysinh,
@@ -58,41 +57,44 @@ exports.createUser = async (req, res) => {
     }
     res.json(result);
 };
-exports.usersPagination = async (req, res) => {
-    const pageNum = parseInt(req.query.pageNum);
-    const size = parseInt(req.query.size);
-    const query = {};
-    if(pageNum < 0 || pageNum === 0)
-    {
-        return res.status(400).json({
-            status: 'page start with 1'
-        })
-    }
-    query.skip = size * (pageNum - 1); 
-    query.limit = size;
-    const userCount = await User.countDocuments();
-    if(userCount > 0)
-    {
-        const users = await User.find({}, {}, query).sort({_id: 'desc'});
-        return res.json({
-            users,
-            userTotal: userCount
-        })
-    }
-    return res.json({
-        users: [],
-        userTotal: userCount
-    });
-};
 exports.getUsers = async (req, res) => {
-    const users = await User.find();
+    const users = await User.find().sort({_id: 'desc'});
     if(users.length === 0)
     {
         return res.json({
-            users: []
+            users: [],
+            status: 'USERS_NOTFOUND'
         });
     }
-    return await res.json({
-        users
+    return res.json({
+        users,
+        status: 'USERS_EXITS'
+    });
+};
+exports.deleteUser = async (req, res) => {
+    const { ids } = req.body;
+    if(!ids)
+    {
+        return res.status(400).json({
+            errors: 'id not found'
+        });
+    }
+    ids.forEach(async id => {
+        const rs = await User.findByIdAndDelete(id);
+        if(!rs)
+        {
+            return res.status(400).json({
+                errors: 'delete fail'
+            })
+        }
+    });
+    const users = await User.find();
+    if(!users)
+    {
+        return res.status(400).json({ errors: 'users not found' })
+    }
+    return res.json({
+        users,
+        status: 'Delete user success'
     });
 };
