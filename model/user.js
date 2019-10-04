@@ -2,13 +2,9 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 const UserSchema = new Schema({
-    maGV: {
-        type: String,
-        required: true
-    },
     name: {
         type: String,
-        required: true
+        default: ''
     },
     email: {
         type: String,
@@ -20,7 +16,7 @@ const UserSchema = new Schema({
     },
     ngaysinh: {
         type: Date,
-        required: true,
+        default: ''
     },
     avatar: {
         type: String,
@@ -28,11 +24,11 @@ const UserSchema = new Schema({
     },
     gioitinh: {
         type: Boolean,
-        required: true
+        default: ''
     },
     sdt: {
         type: String,
-        required: true
+        default: ''
     },
     ngaydangki: {
         type: Date,

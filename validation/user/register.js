@@ -3,7 +3,6 @@ const isEmpty = require('../is_empty');
 
 module.exports = data => {
     let errors = {};
-    data.maGV = !isEmpty(data.maGV) ? data.maGV : '';
     data.name = !isEmpty(data.name) ? data.name : '';
     data.email = !isEmpty(data.email) ? data.email : '';
     data.password = !isEmpty(data.password) ? data.password : '';
@@ -12,14 +11,6 @@ module.exports = data => {
     data.gioitinh = !isEmpty(data.gioitinh) ? data.gioitinh : '';
     data.sdt = !isEmpty(data.sdt) ? data.sdt : '';
 
-    if(validator.isEmpty(data.maGV))
-    {
-        errors.maGV = 'Mã giảng viên không được để trống';
-    }
-    if(!validator.isLength(data.maGV, { min: 10, max: 10 }))
-    {
-        errors.maGV = 'Mã giảng viên 10 kí tự';
-    }
     // if(!validator.isLength(data.name, { min: 2, max: 10 }))
     // {
     //     errors.name = 'Tên từ 2 đến 10 kí tự';
