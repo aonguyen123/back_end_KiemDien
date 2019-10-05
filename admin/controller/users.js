@@ -43,7 +43,10 @@ exports.createUser = async (req, res) => {
             status: 'save fail'
         })
     }
-    res.json(result);
+    res.json({
+        status: 'Add user success',
+        userAdd: result
+    });
 };
 exports.getUsers = async (req, res) => {
     const users = await User.find().sort({_id: 'desc'});
