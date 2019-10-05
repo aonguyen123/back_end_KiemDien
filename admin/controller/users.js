@@ -10,28 +10,16 @@ exports.createUser = async (req, res) => {
     {
         return res.status(400).json(errors);
     }
-    const checkEmail = await User.findOne({email: req.body.email});
-    if(checkEmail)
+    const user = await User.findOne({email: req.body.email});
+    if(user)
     {
         return res.status(400).json({
             email: 'Email đã tồn tại'
         });
     }
-    const user = await User.findOne({maGV: req.body.maGV});
-    if(user)
-    {
-        return res.status(400).json({
-            maGV: 'Mã giảng viên đã tồn tại'
-        })
-    }
     const newUser = new User({
-        maGV: req.body.maGV,
-        name: req.body.name,
         email: req.body.email,
-        password: req.body.password,
-        ngaysinh: req.body.ngaysinh,
-        gioitinh: req.body.gioitinh,
-        sdt: req.body.sdt
+        password: req.body.password
     });
     const salt = await bcrypt.genSalt(10);
     if(!salt)
@@ -105,4 +93,7 @@ exports.deleteUser = async (req, res) => {
         users,
         status: 'USERS_EXITS'
     });
+};
+exports.updateUser = async (req, res) => {
+    
 };

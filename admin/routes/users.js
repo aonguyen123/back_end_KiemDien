@@ -11,4 +11,7 @@ Router.get('/getUsers', passport.authorize('admin-authz', {session: false}), (re
 Router.delete('/deleteUsers', passport.authorize('admin-authz', {session: false}), (req, res) => {
     usersController.deleteUser(req, res);
 });
+Router.post('/updateUser', passport.authorize('admin-authz', {session: false}), (req, res) => {
+    usersController.updateUser(req, res);
+});
 module.exports = Router;

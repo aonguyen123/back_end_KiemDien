@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs');
 const userValid = require('./../../validation/user/login');
 const User = require('./../../model/user');
 const updatePasswordValid = require('./../../validation/user/updatePassword');
+const formidable = require('formidable');
+const fs = require('fs');
 
 exports.login = async (req, res) => {
     const { isValid, errors } = userValid(req.body);
@@ -94,4 +96,58 @@ exports.updatePassword = async (req, res) => {
         isSuccess: true,
         user
     })
+};
+exports.uploadAvatar = async (req, res) => {
+    const form = new formidable.IncomingForm();
+    form.uploadDir = "uploads/";
+    form.parse(req, async (err, fields, file) => {
+        if(err)
+        {
+            return res.json({
+                isSuccess: false,
+                status: 'fail'
+            });
+        }
+        const fileName = file.avatar.name;
+        const parts = fileName.split('.');
+        const typeFile = (parts[parts.length - 1]);
+        if(typeFile === 'png' || typeFile === 'jpg' || typeFile === 'jpeg')
+        {
+            var path = file.avatar.path;
+            var newpath = form.uploadDir + file.avatar.name;
+            fs.rename(path, newpath, err => {
+                if (err) {
+                    return res.json({
+                        isSuccess: false,
+                        status: 'upload fail'
+                    });
+                }
+            });
+            const fileName= newpath.split('/')[1];
+            const user = await User.findById(fields.idUser);
+            if(user.avatar === fileName)
+            {
+                return res.json({
+                    isSuccess: false,
+                    status: 'File giống nhau'
+                })
+            }
+            const rs = await User.findOneAndUpdate({_id: fields.idUser}, {avatar: fileName});
+            if(!rs)
+            {
+                return res.json({isSuccess: false, status: 'update fail' })
+            }
+            res.json({
+                isSuccess: true,
+                fileName: fileName
+            });
+        }
+        else
+        {
+            return res.json({
+                isSuccess: false,
+                status: 'Sai định dạng file'
+            });
+        }
+    });
 };

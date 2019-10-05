@@ -8,4 +8,7 @@ Router.post('/login', (req, res) => {
 Router.post('/updatePassword',passport.authenticate('jwt', {session: false}), (req, res) => {
     userController.updatePassword(req, res);
 })
+Router.post('/uploadAvatar',passport.authenticate('jwt', {session: false}), (req, res) => {
+    userController.uploadAvatar(req, res);
+});
 module.exports = Router;

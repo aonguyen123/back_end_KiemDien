@@ -24,7 +24,7 @@ const UserSchema = new Schema({
     },
     gioitinh: {
         type: Boolean,
-        default: ''
+        default: true
     },
     sdt: {
         type: String,
