@@ -15,7 +15,7 @@ const UserSchema = new Schema({
         required: true
     },
     ngaysinh: {
-        type: Date,
+        type: String,
         default: ''
     },
     avatar: {
@@ -31,10 +31,16 @@ const UserSchema = new Schema({
         default: ''
     },
     ngaydangki: {
-        type: Date,
-        default: Date.now
+        type: String,
+        default: () => {
+            const d = new Date();
+            let day = d.getDate();
+            let month = d.getMonth() + 1;
+            day < 10 ? day = `0${day}` : day;
+            month < 10 ? month = `0${month}` : month;
+            return `${day}/${month}/${d.getFullYear()}`;
+        }
     }
 });
-UserSchema.set('timestamps', true);
 const User = mongoose.model('Users', UserSchema);
 module.exports = User;

@@ -5,6 +5,7 @@ const User = require('./../../model/user');
 const updatePasswordValid = require('./../../validation/user/updatePassword');
 const formidable = require('formidable');
 const fs = require('fs');
+const updateInfoUserValid = require('./../../validation/user/updateInfoUser');
 
 exports.login = async (req, res) => {
     const { isValid, errors } = userValid(req.body);
@@ -150,4 +151,37 @@ exports.uploadAvatar = async (req, res) => {
             });
         }
     });
+};
+exports.updateInfoUser = async (req, res) => {
+    const { isValid, errors } = updateInfoUserValid(req.body);
+    if(!isValid)
+    {
+        return res.json({
+            isSuccess: false,
+            errors
+        });
+    }
+    const checkUser = await User.find({email: req.body.email});
+    if(checkUser.length > 1)
+    {
+        return res.json({
+            isSuccess: false,
+            email: 'Email đã tồn tại'
+        });
+    }
+    const user = req.body;
+    const userAfterUpdate = await User.findByIdAndUpdate(user._id, {
+        name: user.name, email: user.email, ngaysinh: user.ngaysinh, gioitinh: user.gioitinh,
+        sdt: user.sdt
+    });
+    if(!userAfterUpdate)
+    {
+        return res.json({
+            isSuccess: false,
+            status: 'Update fail'
+        });
+    }
+    res.json({
+        isSuccess: true
+    })
 };
