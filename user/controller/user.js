@@ -185,3 +185,18 @@ exports.updateInfoUser = async (req, res) => {
         isSuccess: true
     })
 };
+exports.getUser = async (req, res) => {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    if(!user)
+    {
+        return res.json({
+            isSuccess: false,
+            status: 'get user fail'
+        });
+    }
+    res.json({
+        isSuccess: true,
+        user
+    });
+};
