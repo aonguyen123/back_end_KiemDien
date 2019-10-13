@@ -11,16 +11,14 @@ const classesSchema = new Schema({
         required: true
     },
     thoigianbatdau: {
-        type: Date,
-        required: true
+        type: Date
     },
     thoigianketthuc: {
-        type: Date,
-        required: true
+        type: Date
     },
     mota: {
         type: String,
-        required: true
+        default: ''
     },
     hinhdaidien: {
         type: String,
@@ -44,10 +42,14 @@ const classesSchema = new Schema({
     ],
     giobatdau: {
         type: Date,
-        required: true
+        default: ''
     },
     idUser: {
         type: String
+    },
+    thoigiantao: {
+        type: Date,
+        default: Date.now
     },
     status: {
         type: Boolean,

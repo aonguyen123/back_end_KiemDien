@@ -70,33 +70,10 @@ exports.deleteUser = async (req, res) => {
             errors: 'id not found'
         });
     }
-    let err = false;
     ids.forEach(async id => {
-        const rs = await User.findByIdAndDelete(id);
-        if(!rs)
-        {
-            err = true;
-        }
+        await User.findByIdAndDelete(id);
     });
-    if(err)
-    {
-        return res.status(400).json({
-            status: 'delete fail'
-        });
-    }
-    const users = await User.find().sort({_id: 'desc'});    
-    if(users.length === 0)
-    {
-        return res.json({
-            users: [],
-            status: 'USERS_NOTFOUND'
-        });
-    }
     return res.json({
-        users,
-        status: 'USERS_EXITS'
+        status: 'DELETE_SUCCESS'
     });
-};
-exports.updateUser = async (req, res) => {
-    
 };

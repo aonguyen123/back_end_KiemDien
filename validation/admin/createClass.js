@@ -7,7 +7,7 @@ module.exports = data => {
     data.thoigianbatdau = !isEmpty(data.thoigianbatdau) ? data.thoigianbatdau : '';
     data.thoigianketthuc = !isEmpty(data.thoigianketthuc) ? data.thoigianketthuc : '';
     data.mota = !isEmpty(data.mota) ? data.mota : '';
-    data.giobatdau = !isEmpty(data.giobatdau) ? data.giobatdau : '';
+    //data.giobatdau = !isEmpty(data.giobatdau) ? data.giobatdau : '';
 
     if(validator.isEmpty(data.tenlop))
     {
@@ -33,10 +33,10 @@ module.exports = data => {
     {
         errors.mota = 'Mô tả từ 10 đến 150 kí tự';
     }
-    if(validator.isEmpty(data.giobatdau))
-    {
-        errors.giobatdau = 'Giờ bắt đầu không được để trống';
-    }
+    // if(validator.isEmpty(data.giobatdau))
+    // {
+    //     errors.giobatdau = 'Giờ bắt đầu không được để trống';
+    // }
     return {
         errors,
         isValid: isEmpty(errors)
