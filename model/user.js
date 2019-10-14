@@ -40,6 +40,10 @@ const UserSchema = new Schema({
             month < 10 ? month = `0${month}` : month;
             return `${day}/${month}/${d.getFullYear()}`;
         }
+    },
+    status: {
+        type: Number,
+        default: 0 // 0 Incomplete 1 Complete 2 Missing  
     }
 });
 const User = mongoose.model('Users', UserSchema);

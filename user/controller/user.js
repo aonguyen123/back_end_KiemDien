@@ -138,6 +138,7 @@ exports.uploadAvatar = async (req, res) => {
             {
                 return res.json({isSuccess: false, status: 'update fail' })
             }
+            await User.findByIdAndUpdate(fields.idUser, {status: 2});
             res.json({
                 isSuccess: true,
                 fileName: fileName
@@ -161,8 +162,8 @@ exports.updateInfoUser = async (req, res) => {
             errors
         });
     }
-    const checkUser = await User.find({email: req.body.email});
-    if(checkUser.length > 1)
+    const checkUser = await User.find({_id: {$ne: req.body._id}}).findOne({email: req.body.email});
+    if(checkUser)
     {
         return res.json({
             isSuccess: false,
@@ -174,12 +175,25 @@ exports.updateInfoUser = async (req, res) => {
         name: user.name, email: user.email, ngaysinh: user.ngaysinh, gioitinh: user.gioitinh,
         sdt: user.sdt
     });
+    
     if(!userAfterUpdate)
     {
         return res.json({
             isSuccess: false,
             status: 'Update fail'
         });
+    }
+    const exists = await User.findById(user._id);
+    if(exists)
+    {
+        if(exists.name === '' || exists.ngaysinh === '' || exists.avatar === '' || exists.sdt === '')
+        {
+            await User.findByIdAndUpdate(user._id, {status: 2});
+        }
+        else
+        {
+            await User.findByIdAndUpdate(user._id, {status: 1});
+        }
     }
     res.json({
         isSuccess: true

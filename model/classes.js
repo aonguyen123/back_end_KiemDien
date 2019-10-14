@@ -45,7 +45,8 @@ const classesSchema = new Schema({
         default: ''
     },
     idUser: {
-        type: String
+        type: String,
+        default: ''
     },
     thoigiantao: {
         type: Date,
@@ -54,7 +55,8 @@ const classesSchema = new Schema({
     status: {
         type: Boolean,
         default: true //active
-    }
+    },
+     
 });
 const Classes = mongoose.model('Classes', classesSchema);
 module.exports = Classes;

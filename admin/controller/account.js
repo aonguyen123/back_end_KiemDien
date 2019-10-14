@@ -9,8 +9,8 @@ exports.updateInfo = async (req, res) => {
     {
         return res.status(400).json(errors);
     }
-    const admin = await Admin.find({email: req.body.email});
-    if(admin.length > 1)
+    const admin = await Admin.find({_id: {$ne: req.body.id}}).findOne({email: req.body.email});
+    if(admin)
     {
         return res.status(400).json({
             email: 'Email đã tồn tại'
