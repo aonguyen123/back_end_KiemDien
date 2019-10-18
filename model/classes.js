@@ -54,9 +54,12 @@ const classesSchema = new Schema({
     },
     status: {
         type: Boolean,
-        default: true //active
+        default: true //active nếu vẫn còn thời hạn trước thời gian kết thúc
     },
-     
+    managed: {
+        type: Boolean,
+        default: false
+    }
 });
 const Classes = mongoose.model('Classes', classesSchema);
 module.exports = Classes;

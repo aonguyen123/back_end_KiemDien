@@ -17,4 +17,7 @@ Router.put('/updateInfoUser', (req, res) => {
 Router.get('/getUser/:id', passport.authenticate('jwt', {session: false}), (req, res) => {
     userController.getUser(req, res);
 });
+Router.get('/getDanhsachKiemdien', (req, res) => {
+    userController.getDanhsachKiemdien(req, res);
+});
 module.exports = Router;
