@@ -138,7 +138,6 @@ exports.uploadAvatar = async (req, res) => {
             {
                 return res.json({isSuccess: false, status: 'update fail' })
             }
-            await User.findByIdAndUpdate(fields.idUser, {status: 2});
             res.json({
                 isSuccess: true,
                 fileName: fileName

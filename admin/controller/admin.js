@@ -111,8 +111,8 @@ exports.updateAvatar = async (req, res) => {
         const typeFile = (parts[parts.length - 1]);
         if(typeFile === 'png' || typeFile === 'jpg' || typeFile === 'jpeg')
         {
-            var path = file.avatar.path;
-            var newpath = form.uploadDir + file.avatar.name;
+            const path = file.avatar.path;
+            const newpath = form.uploadDir + file.avatar.name;
             fs.rename(path, newpath, err => {
                 if (err) {
                     return res.status(400).json({
@@ -125,7 +125,7 @@ exports.updateAvatar = async (req, res) => {
             if(admin.avatar === fileName)
             {
                 return res.status(400).json({
-                    status: 'File giống nhau'
+                    status: 'Avatar đã tồn tại'
                 })
             }
             const rs = await Admin.findOneAndUpdate({_id: fields.idUser}, {avatar: fileName});

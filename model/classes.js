@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 const Schema = mongoose.Schema;
 const classesSchema = new Schema({
@@ -11,14 +12,14 @@ const classesSchema = new Schema({
         required: true
     },
     thoigianbatdau: {
-        type: Date
+        type: String
     },
     thoigianketthuc: {
-        type: Date
+        type: String
     },
     mota: {
         type: String,
-        default: ''
+        required: true
     },
     hinhdaidien: {
         type: String,
@@ -41,16 +42,14 @@ const classesSchema = new Schema({
         }
     ],
     giobatdau: {
-        type: Date,
-        default: ''
+        type: String,
     },
     idUser: {
         type: String,
         default: ''
     },
     thoigiantao: {
-        type: Date,
-        default: Date.now
+        type: Date
     },
     status: {
         type: Boolean,
