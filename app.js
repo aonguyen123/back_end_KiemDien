@@ -13,7 +13,7 @@ const accountRouter = require('./admin/routes/account');
 const usersRouter = require('./admin/routes/users');
 const classesRouter = require('./admin/routes/classes');
 
-mongoose.connect(config.DB,{ useNewUrlParser: true, useFindAndModify: false }).then(() => {
+mongoose.connect(config.DB,{ useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true }).then(() => {
     console.log('database has connected');
 },
 err => {

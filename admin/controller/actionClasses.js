@@ -1,7 +1,7 @@
 const moment = require('moment');
 const fs = require('fs');
 const formidable = require('formidable');
-const path = require('path');
+const XLSX = require('xlsx');
 const createClassValid = require('./../../validation/admin/createClass');
 const checkSpecialCharacters = require('./../../helper/checkSpecialCharacters');
 const makeid = require('./../../helper/createCode');
@@ -181,4 +181,67 @@ exports.removeAvatarClass = async (req, res) => {
         message: 'Remove class avatar success',
         isSuccess: true
     })
+};
+exports.importDssvClass = async (req, res) => {
+    const form = new formidable.IncomingForm();
+    form.uploadDir = 'uploads/';
+    form.parse(req, async (err, fields, file) => {
+        if(err)
+        {
+            return res.status(400).json({status: 'parse file fail'});
+        }
+        const fileName = file.dssvClass.name;
+        const parts = fileName.split('.');
+        const typeFile = (parts[parts.length - 1]);
+        if(typeFile === 'xlsx' || typeFile === 'xls')
+        {
+            const { path } = file.dssvClass;
+            const newPath = form.uploadDir + file.dssvClass.name;
+            fs.rename(path, newPath, async err => {
+                if(err)
+                {
+                    return res.status(400).json({status: 'rename fail'});
+                }
+                const workbook = XLSX.readFile(newPath, {cellDates: true});
+                const sheet_name_list = workbook.SheetNames;
+                const xlData = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]]);
+                
+                let isError = false;
+                xlData.some(value => {
+                    if(!value.mssv || !value.ten || !value.ngaysinh || !value.gioitinh)
+                    {
+                        isError = true;
+                        res.json({
+                            status: 'FILE_FORMAT_ERROR',
+                            message: 'The file is not in the correct format',
+                            isSuccess: false
+                        })
+                    }
+                    return !value.mssv || !value.ten || !value.ngaysinh || !value.gioitinh;
+                });
+                if(!isError)
+                {
+                    const sinhvien = {};
+                    await Classes.updateOne({_id: fields._id}, {dssv: []});
+                    xlData.forEach(async sv => {
+                        sinhvien.maSV = sv.mssv;
+                        sinhvien.tenSV = sv.ten;
+                        sinhvien.ngaysinh = moment(sv.ngaysinh, 'DD/MM/YYYY').add(1, 'days').format('DD/MM/YYYY');
+                        sinhvien.gioitinh = sv.gioitinh;
+                        await Classes.updateMany({_id: fields._id}, {$push: {dssv: sinhvien}});
+                    });
+                    return res.json({
+                            status: 'FILE_IMPORT_SUCCESS',
+                            message: 'Successfully imported member list file',
+                            isSuccess: true
+                    })
+                }
+            });
+        }
+        if(typeFile === 'xml')
+        {
+            
+        }
+        //xu ly cac file .xml, .csv
+    });
 };

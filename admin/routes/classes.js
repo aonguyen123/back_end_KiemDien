@@ -21,4 +21,7 @@ Router.post('/updateAvatarClassById', passport.authorize('admin-authz', {session
 Router.delete('/removeAvatarClassById', passport.authorize('admin-authz', {session: false}), (req, res) => {
     actionClassesController.removeAvatarClass(req, res);
 });
+Router.post('/importDssvClassById', (req, res) => {
+    actionClassesController.importDssvClass(req, res);
+});
 module.exports = Router;

@@ -35,6 +35,10 @@ const classesSchema = new Schema({
                 type: String,
                 required: true
             },
+            ngaysinh: {
+                type: String,
+                require: true
+            },
             gioitinh: {
                 type: String,
                 required: true
