@@ -1,23 +1,24 @@
 const Router = require('express').Router();
-const userController = require('./../controller/user');
 const passport = require('passport');
+const userController = require('./../controller/user');
+const actionUserController = require('./../controller/actionUser');
 
 Router.post('/login', (req, res) => {
     userController.login(req, res);
 });
-Router.post('/updatePassword', passport.authenticate('jwt', {session: false}), (req, res) => {
-    userController.updatePassword(req, res);
-})
-Router.post('/uploadAvatar', passport.authenticate('jwt', {session: false}), (req, res) => {
-    userController.uploadAvatar(req, res);
-});
-Router.put('/updateInfoUser', (req, res) => {
-    userController.updateInfoUser(req, res);
-});
 Router.get('/getUser/:id', passport.authenticate('jwt', {session: false}), (req, res) => {
     userController.getUser(req, res);
 });
-Router.get('/getDanhsachKiemdien', (req, res) => {
-    userController.getDanhsachKiemdien(req, res);
+
+
+Router.post('/updatePassword', passport.authenticate('jwt', {session: false}), (req, res) => {
+    actionUserController.updatePassword(req, res);
+})
+Router.post('/uploadAvatar', passport.authenticate('jwt', {session: false}), (req, res) => {
+    actionUserController.uploadAvatar(req, res);
 });
+Router.put('/updateInfoUser', (req, res) => {
+    actionUserController.updateInfoUser(req, res);
+});
+
 module.exports = Router;

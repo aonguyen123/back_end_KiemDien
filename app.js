@@ -8,10 +8,13 @@ const config = require('./config/db');
 
 const adminRouter = require('./admin/routes/admin');
 const cityRouter = require('./admin/routes/city');
-const userRouter = require('./user/routes/user');
 const accountRouter = require('./admin/routes/account');
 const usersRouter = require('./admin/routes/users');
 const classesRouter = require('./admin/routes/classes');
+
+const userRouter_user = require('./user/routes/user');
+const classRouter_user = require('./user/routes/class');
+const kiemdienRouter_user = require('./user/routes/kiemdien');
 
 mongoose.connect(config.DB,{ useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true }).then(() => {
     console.log('database has connected');
@@ -35,4 +38,4 @@ app.listen(PORT, () => {
     console.log(`Server listened port ${PORT}`);
 })
 app.use('/api/admin', [adminRouter, cityRouter, accountRouter, usersRouter, classesRouter]);
-app.use('/api/user', [userRouter]);
+app.use('/api/user', [userRouter_user, classRouter_user, kiemdienRouter_user]);
