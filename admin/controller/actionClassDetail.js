@@ -36,9 +36,13 @@ exports.updateInfoClass = async (req, res) => {
     thoigianbatdau = moment(thoigianbatdau).toISOString();
     giobatdau = moment(giobatdau).toISOString();
     thoigianketthuc = moment(thoigianketthuc).toISOString();
-
+    let status = false;
+    if(moment(thoigianketthuc).isAfter(moment().toISOString()))
+    {
+        status = true;
+    }
     const classUpdate = await Classes.findByIdAndUpdate(_id, {
-        malop, tenlop, thoigianbatdau, thoigianketthuc, mota, giobatdau
+        malop, tenlop, thoigianbatdau, thoigianketthuc, mota, giobatdau, status
     });
     if(!classUpdate)
     {
@@ -140,7 +144,7 @@ exports.addClassMember = async (req, res) => {
     obj.ngaysinh = moment(newMember.ngaysinh).format('DD/MM/YYYY');
     obj.gioitinh = (newMember.gioitinh === 'male') ? 'Nam' : 'Nữ';
 
-    const rs = await Classes.update({ _id }, { $push: { dssv: obj }});
+    const rs = await Classes.updateOne({ _id }, { $push: { dssv: obj }});
     if(!rs)
     {
         return res.status(400).json({status: 'add member fail'});
@@ -151,3 +155,54 @@ exports.addClassMember = async (req, res) => {
         isSuccess: true
     });
 };
+exports.editMemberClass = async (req, res) => {
+    const { member, idClass } = req.body;
+    const { isValid, errors } = createMemberValid(member);
+    if(!isValid)
+    {
+        return res.status(400).json(errors);
+    }
+    const lop = await Classes.findById(idClass, 'dssv');
+    const {dssv} = lop;
+    
+    const newDssv = dssv.filter(sv => sv._id.toString() !== member.id);
+    const checkMaSv = newDssv.some(sv => sv.maSV === member.mssv);
+    if(checkMaSv)
+    {
+        return res.status(400).json({
+            mssv: 'Mã thành viên đã tồn tại'
+        })
+    }
+    const updated = await Classes.update({_id: idClass, 'dssv._id': member.id}, {'$set': {
+        'dssv.$.maSV': member.mssv,
+        'dssv.$.tenSV': member.ten,
+        'dssv.$.ngaysinh': member.ngaysinh,
+        'dssv.$.gioitinh': member.gioitinh
+    }});
+    if(!updated)
+    {
+        return res.status(400).json({
+            status: 'update member fail'
+        })
+    }
+    res.json({
+        status: 'UPDATE_CLASS_MEMBER_SUCCESS',
+        message: 'Update class member success',
+        isSuccess: true
+    })
+};  
+exports.deleteClassMember = async (req, res) => {
+    const { idClass, members } = req.body;
+    const deleted = await Classes.updateOne({_id: idClass}, {$pull: {dssv: {_id: {$in: members}}}}, null);
+    if(!deleted)
+    {
+        return res.status(400).json({
+            status: 'Delete class member fail'
+        });
+    }
+    res.json({
+        status: 'DELETE_CLASS_MEMBER_SUCCESS',
+        message: 'Delete class member success',
+        isSuccess: true
+    })
+}

@@ -65,3 +65,18 @@ exports.createClass = async (req, res) => {
         isSuccess: true
     });
 };
+exports.deleteClass = async (req, res) => {
+    const { _id } = req.body;
+    const deleted = await Classes.deleteOne({_id});
+    if(!deleted)
+    {
+        return res.status(400).json({
+            status: 'Delete class fail'
+        });
+    }
+    res.json({
+        status: 'DELETE_CLASS_SUCCESS',
+        message: 'Delete class success',
+        isSuccess: true
+    });
+}

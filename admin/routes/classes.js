@@ -11,9 +11,14 @@ Router.get('/getClasses', (req, res) => {
 Router.get('/getClassById/:id', (req, res) => {
     classController.getClassById(req, res);
 });
+
 Router.post('/createClass', passport.authorize('admin-authz', {session: false}), (req, res) => {
     actionClassesController.createClass(req, res);
 });
+Router.delete('/deleteClass', passport.authorize('admin-authz', {session: false}), (req, res) => {
+    actionClassesController.deleteClass(req, res);
+});
+
 Router.put('/updateInfoClass', passport.authorize('admin-authz', {session: false}), (req, res) => {
     actionClassDetailController.updateInfoClass(req, res);
 });
@@ -23,10 +28,17 @@ Router.post('/updateAvatarClassById', passport.authorize('admin-authz', {session
 Router.delete('/removeAvatarClassById', passport.authorize('admin-authz', {session: false}), (req, res) => {
     actionClassDetailController.removeAvatarClass(req, res);
 });
-Router.post('/importDssvClassById', passport.authorize('admin-authz', {session: false}), (req, res) => {
-    importFileController.importDssvClass(req, res);
-});
 Router.post('/addClassMemberById', passport.authorize('admin-authz', {session: false}), (req, res) => {
     actionClassDetailController.addClassMember(req, res);
+});
+Router.put('/editMemberClassById', passport.authorize('admin-authz', {session: false}), (req, res) => {
+    actionClassDetailController.editMemberClass(req, res);
+});
+Router.delete('/deleteClassMemberById', passport.authorize('admin-authz', {session: false}), (req, res) => {
+    actionClassDetailController.deleteClassMember(req, res);
+});
+
+Router.post('/importDssvClassById', passport.authorize('admin-authz', {session: false}), (req, res) => {
+    importFileController.importDssvClass(req, res);
 });
 module.exports = Router;

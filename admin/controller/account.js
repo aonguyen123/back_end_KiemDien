@@ -1,94 +1,42 @@
+const path = require('path');
 const Admin = require('./../../model/admin');
-const updateInfoValid = require('./../../validation/admin/updateInfo');
-const updatePasswordValid = require('./../../validation/admin/updatePassword');
-const bcrypt = require('bcryptjs');
 
-exports.updateInfo = async (req, res) => {
-    const { errors, isValid } = updateInfoValid(req.body);
-    if(!isValid)
-    {
-        return res.status(400).json(errors);
-    }
-    const admin = await Admin.find({_id: {$ne: req.body.id}}).findOne({email: req.body.email});
-    if(admin)
+exports.getInfoAccount = async (req, res) => {
+    const {id} = req.query;
+    if(!id)
     {
         return res.status(400).json({
-            email: 'Email đã tồn tại'
+            status: 'id not found'
         });
     }
-    const user = req.body;
-    const adminAfterUpdate = await Admin.findByIdAndUpdate(user.id, {
-        firstName: user.firstName, lastName: user.lastName, email: user.email, country: user.country,
-        sdt: user.sdt, city: user.city
-    });
-    if(!adminAfterUpdate)
+    const account = await Admin.findById(id);
+    if(!account)
     {
         return res.status(400).json({
-            status: 'Update profile fail'
-        })
+            status: 'Get account not found'
+        });
     }
-    res.json({
-        user: adminAfterUpdate,
-        status: 'Update profile success'
-    });
+    res.json(account);
 };
-exports.removeAvatar = async (req, res) => {
-    const { idUser } = req.body;
-    const admin = await Admin.findById(idUser);
-    if(!admin)
+exports.getAvatar = async (req, res) => {
+    const fileName = req.params.name;
+    if(!fileName)
     {
         return res.status(400).json({
-            status: 'Admin not found'
+            status: 'no file name'
         });
     }
-    if(!admin.avatar)
-    {
-        return res.status(400).json({
-            status: 'Avatar not found'
-        });
-    }
-    const rs = await Admin.updateOne({_id: idUser}, {avatar: null});
-    if(!rs)
-    {
-        return res.status(400).json({
-            status: 'Remove avatar fail'
-        });
-    }
-    res.json({
-        success: 'Remove success'
-    });
+    res.sendFile(path.resolve(`./uploads/${fileName}`));
 };
-exports.updatePassword = async (req, res) => {
-    const { errors, isValid } = updatePasswordValid(req.body.user);
-    if(!isValid)
-    {
-        return res.status(400).json(errors);
-    }
-    const { user } = req.body;
-    const salt = await bcrypt.genSalt(10);
-    if(!salt)
-    {
-        return res.status(400).json({
-            status: 'salt fail'
-        });
-    }
-    const hash = await bcrypt.hash(user.password, salt);
-    if(!hash)
-    {
-        return res.status(400).json({
-            status: 'hash fail'
-        });
-    }
-    user.password = hash;
-    const admin = await Admin.findByIdAndUpdate(user.id, {password: user.password});
-    if(!admin)
-    {
-        return res.status(400).json({
-            status: 'updata password fail'
-        });
-    }
-    res.json({
-        admin,
-        status: 'Update password success'
+exports.getMe = async (req, res) => {
+    return await res.json({
+        id: req.user.id,
+        firstName: req.user.firstName,
+        lastName: req.user.lastName,
+        email: req.user.email,
+        avatar: req.user.avatar,
+        country: req.user.country,
+        sdt: req.user.sdt,
+        city: req.user.city
     });
 };

@@ -60,7 +60,7 @@ exports.importDssvClass = async (req, res) => {
                                                 ? moment(obj.ngaysinh).format('DD/MM/YYYY') 
                                                 : moment(obj.ngaysinh).add(1, 'days').format('DD/MM/YYYY')
                                             );
-                        sinhvien.gioitinh = obj.gioitinh;
+                        sinhvien.gioitinh = obj.gioitinh === 'Nam' ? 'Nam' : 'Nữ';
                         Classes.updateMany({_id: fields._id}, {$push: {dssv: sinhvien}}, done);
                     }, function allDone(err) {
                         if(!err)
@@ -113,7 +113,7 @@ exports.importDssvClass = async (req, res) => {
                                 sinhvien.maSV = obj.mssv;
                                 sinhvien.tenSV = obj.ten;
                                 sinhvien.ngaysinh = moment(obj.ngaysinh, 'DD/MM/YYYY').format('DD/MM/YYYY');
-                                sinhvien.gioitinh = obj.gioitinh;
+                                sinhvien.gioitinh = obj.gioitinh === 'Nam' ? 'Nam' : 'Nữ';
                                 Classes.updateMany({_id: fields._id}, {$push: {dssv: sinhvien}}, done);
                             }, function allDone(err) {
                                 if(!err)
@@ -165,7 +165,7 @@ exports.importDssvClass = async (req, res) => {
                         sinhvien.maSV = obj.mssv;
                         sinhvien.tenSV = obj.ten;
                         sinhvien.ngaysinh = moment(obj.ngaysinh).format('DD/MM/YYYY');
-                        sinhvien.gioitinh = obj.gioitinh;
+                        sinhvien.gioitinh = obj.gioitinh === 'Nam' ? 'Nam' : 'Nữ';
                         Classes.updateMany({_id: fields._id}, {$push: {dssv: sinhvien}}, done);
                     }, function allDone(err) {
                         if(!err)

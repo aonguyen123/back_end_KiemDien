@@ -1,8 +1,5 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const fs = require('fs');
-const formidable = require('formidable');
-const path = require('path');
 
 const loginValid = require('../../validation/admin/login');
 const registerValid = require('../../validation/admin/register');
@@ -56,18 +53,19 @@ exports.register = async (req, res) => {
     res.json(result);
 }
 exports.login = async (req, res) => {
-    const { isValid, errors } = loginValid(req.body);
+    const { account } = req.body;
+    const { isValid, errors } = loginValid(account);
     if(!isValid)
     {
         return res.status(400).json(errors);
     }
-    const admin = await Admin.findOne({email: req.body.email});
+    const admin = await Admin.findOne({email: account.email});
     if(!admin)
     {
         errors.email = 'Email không tồn tại';
         return res.status(400).json(errors);
     }
-    const isMatch = await bcrypt.compare(req.body.password, admin.password);
+    const isMatch = await bcrypt.compare(account.password, admin.password);
     if(!isMatch)
     {
         errors.password = 'Mật khẩu không chính xác';
@@ -91,96 +89,10 @@ exports.login = async (req, res) => {
             });
         }
         res.json({
-            success: true,
+            status: 'LOGIN_SUCCESS',
+            message: 'Login success',
+            isSuccess: true,
             token: `Bearer ${token}`
         });
     });
-};
-exports.updateAvatar = async (req, res) => {
-    const form = new formidable.IncomingForm();
-    form.uploadDir = "uploads/";
-    form.parse(req, async (err, fields, file) => {
-        if(err)
-        {
-            return res.status(400).json({
-                status: 'fail'
-            })
-        }
-        const fileName = file.avatar.name;
-        const parts = fileName.split('.');
-        const typeFile = (parts[parts.length - 1]);
-        if(typeFile === 'png' || typeFile === 'jpg' || typeFile === 'jpeg')
-        {
-            const path = file.avatar.path;
-            const newpath = form.uploadDir + file.avatar.name;
-            fs.rename(path, newpath, err => {
-                if (err) {
-                    return res.status(400).json({
-                        status: 'upload fail'
-                    });
-                }
-            });
-            const fileName= newpath.split('/')[1];
-            const admin = await Admin.findById(fields.idUser);
-            if(admin.avatar === fileName)
-            {
-                return res.status(400).json({
-                    status: 'Avatar đã tồn tại'
-                })
-            }
-            const rs = await Admin.findOneAndUpdate({_id: fields.idUser}, {avatar: fileName});
-            if(!rs)
-            {
-                return res.status(400).json({ status: 'update fail' })
-            }
-            res.json({
-                filePath: newpath
-            });
-        }
-        else
-        {
-            return res.status(400).json({
-                status: 'Sai định dạng file'
-            });
-        }
-    });
-};
-exports.getAvatar = async (req, res) => {
-    const fileName = req.params.name;
-    if(!fileName)
-    {
-        return res.status(400).json({
-            status: 'no file name'
-        });
-    }
-    res.sendFile(path.resolve(`./uploads/${fileName}`));
-};
-exports.getMe = async (req, res) => {
-    return await res.json({
-        id: req.user.id,
-        firstName: req.user.firstName,
-        lastName: req.user.lastName,
-        email: req.user.email,
-        avatar: req.user.avatar,
-        country: req.user.country,
-        sdt: req.user.sdt,
-        city: req.user.city
-    });
-};
-exports.getInfoUser = async (req, res) => {
-    const {id} = req.query;
-    if(!id)
-    {
-        return res.status(400).json({
-            status: 'id not found'
-        });
-    }
-    const user = await Admin.findOne({_id: id});
-    if(!user)
-    {
-        return res.status(400).json({
-            status: 'get user not found'
-        });
-    }
-    res.json(user);
 };

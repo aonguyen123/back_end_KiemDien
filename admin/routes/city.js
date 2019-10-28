@@ -5,8 +5,7 @@ const passport = require('passport');
 Router.post('/createCity', (req, res) => {
     cityController.createCity(req, res);
 });
-Router.get('/getCity', (req, res) => {
+Router.get('/getCitys', (req, res) => {
     cityController.getCity(req, res);
-})
-Router.get
+});
 module.exports = Router;

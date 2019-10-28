@@ -40,8 +40,7 @@ const classesSchema = new Schema({
                 require: true
             },
             gioitinh: {
-                type: String,
-                required: true
+                type: String
             }
         }
     ],

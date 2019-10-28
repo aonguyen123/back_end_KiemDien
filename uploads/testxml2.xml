@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Dssv xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<Sv>
+		<mssv>3115410004</mssv>
+		<ten>nguyen duc ao</ten>
+		<ngaysinh>20/10/1999</ngaysinh>
+		<gioitinh>Nam</gioitinh>
+	</Sv>
+	<Sv>
+		<mssv>3115410092</mssv>
+		<ten>tran vi lap</ten>
+		<ngaysinh>21/11/1999</ngaysinh>
+		<gioitinh>Nam</gioitinh>
+	</Sv>
+	<Sv>
+		<mssv>3115410093</mssv>
+		<ten>truong tuan dieu</ten>
+		<ngaysinh>09/03/1990</ngaysinh>
+		<gioitinh>Nữ</gioitinh>
+	</Sv>
+	<Sv>
+		<mssv>3115410045</mssv>
+		<ten>phan hoang tuan</ten>
+		<ngaysinh>20/11/1998</ngaysinh>
+		<gioitinh>Nữ</gioitinh>
+	</Sv>
+	<Sv>
+		<mssv>3115410003</mssv>
+		<ten>sinh vien 1</ten>
+		<ngaysinh>22/12/1998</ngaysinh>
+		<gioitinh>Nữ</gioitinh>
+	</Sv>
+	<Sv>
+		<mssv>3115619138</mssv>
+		<ten>sinh vien 2</ten>
+		<ngaysinh>15/05/1997</ngaysinh>
+		<gioitinh>Nam</gioitinh>
+	</Sv>
+	<Sv>
+		<mssv>3131313141</mssv>
+		<ten>sau dai huy</ten>
+		<ngaysinh>01/01/1991</ngaysinh>
+		<gioitinh>Nam</gioitinh>
+	</Sv>
+</Dssv>

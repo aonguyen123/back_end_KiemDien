@@ -22,7 +22,7 @@ exports.createCity = async (req, res) => {
     });
 };
 exports.getCity = async (req, res) => {
-    const citys = await City.find();
+    const citys = await City.find({}, 'city');
     if(!citys)
     {
         return res.status(400).json({
