@@ -130,7 +130,7 @@ exports.updateInfoUser = async (req, res) => {
     const exists = await User.findById(user._id);
     if(exists)
     {
-        if(exists.name === '' || exists.ngaysinh === '' || exists.avatar === '' || exists.sdt === '')
+        if(exists.ngaysinh === '' || exists.avatar === '')
         {
             await User.findByIdAndUpdate(user._id, {status: 2});
         }

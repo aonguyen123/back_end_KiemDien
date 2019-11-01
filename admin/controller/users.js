@@ -5,6 +5,6 @@ exports.getUsers = async (req, res) => {
     return res.json({ users });
 };
 exports.getUserConditionStatusTrue = async (req, res) => {
-    const users = await User.find({status: 1}).sort({_id: 'desc'});
+    const users = await User.find({status: {$in : [1, 2]}}).sort({_id: 'desc'});
     return res.json(users);
 };

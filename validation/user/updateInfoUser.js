@@ -7,9 +7,9 @@ module.exports = data => {
     data.sdt = !isEmpty(data.sdt) ? data.sdt : '';
     data.name = !isEmpty(data.name) ? data.name : '';
 
-    if(!validator.isLength(data.name, { max: 15 }))
+    if(!validator.isLength(data.name, {min: 2, max: 15 }))
     {
-        errors.name = 'Tên không được quá 15 kí tự';
+        errors.name = 'Tên từ 2 đến 15 kí tự';
     }
     if(!validator.isEmail(data.email))
     {
