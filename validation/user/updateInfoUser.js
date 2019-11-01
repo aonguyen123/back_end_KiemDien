@@ -5,7 +5,12 @@ module.exports = data => {
     let errors = {};
     data.email = !isEmpty(data.email) ? data.email : '';
     data.sdt = !isEmpty(data.sdt) ? data.sdt : '';
+    data.name = !isEmpty(data.name) ? data.name : '';
 
+    if(!validator.isLength(data.name, { max: 15 }))
+    {
+        errors.name = 'Tên không được quá 15 kí tự';
+    }
     if(!validator.isEmail(data.email))
     {
         errors.email = 'Email không đúng';

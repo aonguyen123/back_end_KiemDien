@@ -37,6 +37,12 @@ Router.put('/editMemberClassById', passport.authorize('admin-authz', {session: f
 Router.delete('/deleteClassMemberById', passport.authorize('admin-authz', {session: false}), (req, res) => {
     actionClassDetailController.deleteClassMember(req, res);
 });
+Router.post('/changeManagerPerson', passport.authorize('admin-authz', {session: false}), (req, res) => {
+    actionClassDetailController.changeManagerPerson(req, res);
+});
+Router.put('/removeManagerPerson', passport.authorize('admin-authz', {session: false}), (req, res) => {
+    actionClassDetailController.removeManagerPerson(req, res);
+});
 
 Router.post('/importDssvClassById', passport.authorize('admin-authz', {session: false}), (req, res) => {
     importFileController.importDssvClass(req, res);

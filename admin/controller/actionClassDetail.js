@@ -141,7 +141,7 @@ exports.addClassMember = async (req, res) => {
     const obj = {};
     obj.maSV = newMember.mssv;
     obj.tenSV = newMember.ten;
-    obj.ngaysinh = moment(newMember.ngaysinh).format('DD/MM/YYYY');
+    obj.ngaysinh = newMember.ngaysinh;
     obj.gioitinh = (newMember.gioitinh === 'male') ? 'Nam' : 'Nữ';
 
     const rs = await Classes.updateOne({ _id }, { $push: { dssv: obj }});
@@ -173,7 +173,7 @@ exports.editMemberClass = async (req, res) => {
             mssv: 'Mã thành viên đã tồn tại'
         })
     }
-    const updated = await Classes.update({_id: idClass, 'dssv._id': member.id}, {'$set': {
+    const updated = await Classes.updateOne({_id: idClass, 'dssv._id': member.id}, {'$set': {
         'dssv.$.maSV': member.mssv,
         'dssv.$.tenSV': member.ten,
         'dssv.$.ngaysinh': member.ngaysinh,
@@ -205,4 +205,57 @@ exports.deleteClassMember = async (req, res) => {
         message: 'Delete class member success',
         isSuccess: true
     })
-}
+};
+exports.changeManagerPerson = async (req, res) => {
+    const {idUser, idClass} = req.body;
+    const lopCurrent = await Classes.findById(idClass);
+    if(!lopCurrent.idUser)
+    {
+        const updated = await Classes.findByIdAndUpdate(idClass, {idUser, managed: true});
+            if(!updated)
+            {
+                return res.status(400).json({status: 'Update manager fail'});
+            }
+            return res.json({
+                status: 'UPDATE_MANAGER_SUCCESS',
+                message: 'Update class manager success',
+                isSuccess: true
+            })
+    }
+    else
+    {
+        if(lopCurrent.idUser === idUser)
+        {
+            return res.json({
+                status: 'Manager already exists',
+                message: 'Manager already exists',
+                isSuccess: false
+            });
+        }
+        const updated = await Classes.findByIdAndUpdate(idClass, {idUser, managed: true});
+        if(!updated)
+        {
+            return res.status(400).json({status: 'Update manager fail'});
+        }
+        return res.json({
+            status: 'UPDATE_MANAGER_SUCCESS',
+            message: 'Update class manager success',
+            isSuccess: true
+        });
+    }
+};
+exports.removeManagerPerson = async (req, res) => {
+    const { idClass } = req.body;
+    const removed = await Classes.findByIdAndUpdate(idClass, {idUser: '', managed: false});
+    if(!removed)
+    {
+        return res.status(400).json({
+            status: 'Remove manager person fail'
+        });
+    }
+    return res.json({
+        status: '',
+        message: 'Remove manager person success',
+        isSuccess: true
+    });
+};

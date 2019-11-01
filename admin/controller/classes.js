@@ -4,24 +4,19 @@ const Classes = require('./../../model/classes');
 const User = require('./../../model/user');
 
 exports.getClasses = async (req, res) => {
-    const classes = await Classes.find().sort({_id: 'desc'});
-    classes.forEach( async value => {
-        if(!moment(value.thoigianketthuc).isAfter(moment().toISOString()))
-        {
-            await Classes.findByIdAndUpdate(value._id, {status: false});
-        }
-    });
-    if(classes.length === 0)
+    const classes = await Classes.find();
+    if(classes.length !== 0)
     {
-        return res.json({
-            status: 'CLASS_NOTFOUND',
-            classes
-        })
+        classes.map(async item => {
+            if(moment(item.thoigianketthuc).isBefore(moment().toISOString()) && item.status)
+            {
+                const updated = await Classes.findByIdAndUpdate(item._id, {status: false});
+                if(!updated) return ;
+            }
+        });
     }
-    res.json({
-        status: 'CLASS_EXITS',
-        classes
-    });
+    const rs = await Classes.find().sort({_id: 'desc'});
+    return res.json({ classes: rs });
 };
 exports.getClassById = async (req, res) => {
     const { id } = req.params;

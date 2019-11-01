@@ -11,6 +11,7 @@ const cityRouter = require('./admin/routes/city');
 const accountRouter = require('./admin/routes/account');
 const usersRouter = require('./admin/routes/users');
 const classesRouter = require('./admin/routes/classes');
+const assignesRouter = require('./admin/routes/assignes');
 
 const userRouter_user = require('./user/routes/user');
 const classRouter_user = require('./user/routes/class');
@@ -37,5 +38,5 @@ const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
     console.log(`Server listened port ${PORT}`);
 })
-app.use('/api/admin', [adminRouter, cityRouter, accountRouter, usersRouter, classesRouter]);
+app.use('/api/admin', [adminRouter, cityRouter, accountRouter, usersRouter, classesRouter, assignesRouter]);
 app.use('/api/user', [userRouter_user, classRouter_user, kiemdienRouter_user]);
