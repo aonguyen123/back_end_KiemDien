@@ -89,9 +89,6 @@ exports.login = async (req, res) => {
             });
         }
         res.json({
-            status: 'LOGIN_SUCCESS',
-            message: 'Login success',
-            isSuccess: true,
             token: `Bearer ${token}`
         });
     });

@@ -15,4 +15,7 @@ Router.post('/createUser', passport.authorize('admin-authz', {session: false}), 
 Router.delete('/deleteUsers', passport.authorize('admin-authz', {session: false}), (req, res) => {
     actionUserController.deleteUser(req, res);
 });
+Router.get('/statisticalUserTotal', (req, res) => {
+    usersController.statisticalUserTotal(req, res);
+});
 module.exports = Router;

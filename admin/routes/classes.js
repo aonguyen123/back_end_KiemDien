@@ -11,6 +11,15 @@ Router.get('/getClasses', (req, res) => {
 Router.get('/getClassById/:id', (req, res) => {
     classController.getClassById(req, res);
 });
+Router.get('/getClassLatest', (req, res) => {
+    classController.getClassLatest(req, res);
+});
+Router.get('/statisticalTotalClass', (req, res) => {
+    classController.statisticalTotalClass(req, res);
+});
+Router.get('/statisticalTotalMember', (req, res) => {
+    classController.statisticalTotalMember(req, res);
+});
 
 Router.post('/createClass', passport.authorize('admin-authz', {session: false}), (req, res) => {
     actionClassesController.createClass(req, res);
