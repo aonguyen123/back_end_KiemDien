@@ -10,7 +10,4 @@ Router.get('/getPresencesDetail', (req, res) => {
     presencesDetailController.getPresencesDetail(req, res);
 });
 
-Router.post('/createPresences', (req, res) => {
-    actionPresencesController.createPresences(req, res);
-});
 module.exports = Router;

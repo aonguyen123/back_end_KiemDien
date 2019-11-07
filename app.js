@@ -16,7 +16,7 @@ const presencesRouter = require("./admin/routes/presences");
 
 const userRouter_user = require("./user/routes/user");
 const classRouter_user = require("./user/routes/class");
-const kiemdienRouter_user = require("./user/routes/kiemdien");
+const presencesRouter_user = require("./user/routes/presences");
 
 mongoose
   .connect(config.DB, {
@@ -56,4 +56,4 @@ app.use("/api/admin", [
   assignesRouter,
   presencesRouter
 ]);
-app.use("/api/user", [userRouter_user, classRouter_user, kiemdienRouter_user]);
+app.use("/api/user", [userRouter_user, classRouter_user, presencesRouter_user]);
