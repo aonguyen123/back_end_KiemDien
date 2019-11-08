@@ -5,6 +5,7 @@ const createClassValid = require('./../../validation/admin/createClass');
 const createMemberValid = require('./../../validation/admin/createMember');
 const checkSpecialCharacters = require('./../../helper/checkSpecialCharacters');
 const Classes = require('./../../model/classes');
+const Presences = require('./../../model/presences');
 
 exports.updateInfoClass = async (req, res) => {
     const { isValid, errors } = createClassValid(req.body);
@@ -192,7 +193,7 @@ exports.editMemberClass = async (req, res) => {
     })
 };  
 exports.deleteClassMember = async (req, res) => {
-    const { idClass, members } = req.body;
+    const { idClass, members, listMssv } = req.body;
     const deleted = await Classes.updateOne({_id: idClass}, {$pull: {dssv: {_id: {$in: members}}}}, null);
     if(!deleted)
     {
@@ -200,11 +201,18 @@ exports.deleteClassMember = async (req, res) => {
             status: 'Delete class member fail'
         });
     }
+    const deleteMemberInPresence = await Presences.updateOne({idClass}, {$pull: {presenceList: {memberCode: {$in: listMssv}}}}, null);
+    if(!deleteMemberInPresence)
+    {
+        return res.status(400).json({
+            status: 'Delete class member in presences fail'
+        });
+    }
     res.json({
         status: 'DELETE_CLASS_MEMBER_SUCCESS',
         message: 'Delete class member success',
         isSuccess: true
-    })
+    });
 };
 exports.changeManagerPerson = async (req, res) => {
     const {idUser, idClass} = req.body;

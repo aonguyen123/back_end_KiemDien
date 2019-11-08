@@ -1,6 +1,7 @@
 const moment = require('moment'); 
 const Classes = require('./../../model/classes');
 const User = require('./../../model/user');
+const Presences = require('./../../model/presences');
 
 exports.getClassPresences = async (req, res) => {
     const lops = await Classes.find({managed: true});
@@ -21,7 +22,12 @@ exports.getClassPresences = async (req, res) => {
             const user = await User.findById(classes[i].idUser);
             if(user)
             {
-                classes[i].set('tenUser', user.name, {strict:false}); 
+                classes[i].set('tenUser', user.name, {strict: false}); 
+            }
+            const checkDate = await Presences.findOne({idClass: classes[i]._id});
+            if(checkDate) 
+            {
+                classes[i].set('checkDate', checkDate.updatedAt, {strict: false});
             }
         }
     }    

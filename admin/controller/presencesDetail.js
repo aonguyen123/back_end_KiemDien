@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 const Classes = require('./../../model/classes');
 const Presences = require('./../../model/presences');
 const CheckDate = require('./../../model/checkDate');
@@ -14,7 +15,18 @@ exports.getPresencesDetail = async (req, res) => {
                 status: 'ID_WRONG'
             });
         }
-        const checkDate = await CheckDate.findOne({idClass:classes._id});
+        const checkDate = await CheckDate.findOne({idClass: classes._id});
+        if(checkDate === null)
+        {
+            return res.json({
+                classes,
+                checkDate
+            });    
+        }
+        checkDate.dateList.sort((left, right) => {
+            return moment.utc(moment(left.date, 'DD/MM/YYYY')).diff(moment.utc(moment(right.date, 'DD/MM/YYYY')));
+        });
+
         const dsKD = await Presences.findOne({idClass: classes._id});
         const { dssv } = classes;
         const { presenceList } = dsKD;

@@ -3,6 +3,8 @@ const createClassValid = require('./../../validation/admin/createClass');
 const checkSpecialCharacters = require('./../../helper/checkSpecialCharacters');
 const makeid = require('./../../helper/createCode');
 const Classes = require('./../../model/classes');
+const Presences = require('./../../model/presences');
+const CheckDate = require('./../../model/checkDate');
 
 exports.createClass = async (req, res) => {
     const { isValid, errors } = createClassValid(req.body.newClass);
@@ -72,6 +74,20 @@ exports.deleteClass = async (req, res) => {
     {
         return res.status(400).json({
             status: 'Delete class fail'
+        });
+    }
+    const deleteInCheckDates = await CheckDate.deleteOne({idClass: _id});
+    if(!deleteInCheckDates)
+    {
+        return res.status(400).json({
+            status: 'Delete class in check date list fail'
+        });
+    }
+    const deleteInPresence = await Presences.deleteOne({idClass: _id});
+    if(!deleteInPresence)
+    {
+        return res.status(400).json({
+            status: 'Delete class in presence fail'
         });
     }
     res.json({
