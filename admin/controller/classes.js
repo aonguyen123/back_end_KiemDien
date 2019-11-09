@@ -62,18 +62,9 @@ exports.getClassLatest = async (req, res) => {
     return res.json({ classes: rs });
 };
 exports.statisticalTotalClass = async (req, res) => {
-    let lopsMonthCurrent = [], lopsMonthLast = [];
-    const month = moment().format('MM');
-    const lastMonth = moment().subtract(1, 'month').format('MM');
-    const lops = await Classes.find();
-    if(lops.length !== 0)
-    {
-        lopsMonthCurrent = lops.filter(lop => moment(lop.createdAt).format('MM') === month);
-        lopsMonthLast = lops.filter(lop => moment(lop.createdAt).format('MM') === lastMonth);
-    }
+    const classes = await Classes.find();
     return res.json({
-        lopsMonthCurrent,
-        lopsMonthLast
+        classes
     });
 };
 exports.statisticalTotalMember = async (req, res) => {
