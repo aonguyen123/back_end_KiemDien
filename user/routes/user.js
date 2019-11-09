@@ -10,14 +10,13 @@ Router.get('/getUser/:id', passport.authenticate('jwt', {session: false}), (req,
     userController.getUser(req, res);
 });
 
-
 Router.post('/updatePassword', passport.authenticate('jwt', {session: false}), (req, res) => {
     actionUserController.updatePassword(req, res);
 })
 Router.post('/uploadAvatar', passport.authenticate('jwt', {session: false}), (req, res) => {
     actionUserController.uploadAvatar(req, res);
 });
-Router.put('/updateInfoUser', (req, res) => {
+Router.put('/updateInfoUser', passport.authenticate('jwt', {session: false}), (req, res) => {
     actionUserController.updateInfoUser(req, res);
 });
 

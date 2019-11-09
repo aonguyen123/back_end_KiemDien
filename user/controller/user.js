@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const moment = require('moment');
 const userValid = require('./../../validation/user/login');
 const User = require('./../../model/user');
 
@@ -32,15 +33,12 @@ exports.login = async (req, res) => {
     }
     const payload = {
         _id: user._id,
-        maGV: user.maGV,
-        firstName: user.firstName,
-        lastName: user.lastName,
+        name: user.name,
         email: user.email,
         ngaysinh: user.ngaysinh,
         avatar: user.avatar,
         gioitinh: user.gioitinh,
-        sdt: user.sdt,
-        ngaydangki: user.ngaydangki
+        sdt: user.sdt
     };
     jwt.sign(payload, 'secret', { expiresIn: 3600 }, (err, token) => {
         if(err)
@@ -49,6 +47,7 @@ exports.login = async (req, res) => {
                 status: 'secret fail'
             });
         }
+        user.set('ngayDangKi', moment(user.createdAt).format('DD/MM/YYYY'), {strict:false});
         res.json({
             isSuccess: true,
             token: `Bearer ${token}`,
@@ -66,6 +65,7 @@ exports.getUser = async (req, res) => {
             status: 'get user fail'
         });
     }
+    user.set('ngayDangKi', moment(user.createdAt).format('DD/MM/YYYY'), {strict:false});
     res.json({
         isSuccess: true,
         user

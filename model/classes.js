@@ -51,9 +51,6 @@ const classesSchema = new Schema({
         type: String,
         default: ''
     },
-    thoigiantao: {
-        type: Date
-    },
     status: {
         type: Boolean,
         default: true //active nếu vẫn còn thời hạn trước thời gian kết thúc
