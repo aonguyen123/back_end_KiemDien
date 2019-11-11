@@ -17,6 +17,7 @@ exports.createPresences = async (req, res) => {
     const objPresence = {};
     objPresence.memberCode = memberCode;
     objPresence.checkDate = checkDate;
+    objPresence.status = true;
 
     const classes = await Classes.findById(idClass, 'dssv');
     const { dssv } = classes;

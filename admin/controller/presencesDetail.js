@@ -32,15 +32,20 @@ exports.getPresencesDetail = async (req, res) => {
         const { presenceList } = dsKD;
 
         let arr = [];
+        let obj = {};
         dssv.forEach(sv => {
             presenceList.forEach(kd => {
                 if(kd.memberCode === sv.maSV)
                 {
-                    arr.push(kd.checkDate);
+                    obj.date = kd.checkDate;
+                    obj.status = kd.status;
+                    arr.push(obj);
+                    obj = {};
                 }
             });
             sv.set('checkDate', arr, {strict:false}); 
             arr = [];
+            obj = {};
         });
         return res.json({
             classes,

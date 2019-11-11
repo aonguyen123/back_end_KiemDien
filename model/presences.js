@@ -15,6 +15,9 @@ const presencesSchema = new Schema({
             checkDate: {
                 type: String,
                 required: true
+            },
+            status: {
+                type: Boolean //true co mat, false co phep
             }
         }
     ]
