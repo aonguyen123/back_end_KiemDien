@@ -3,10 +3,13 @@ const passport = require('passport');
 const actionPresencesController = require('../controller/actionPresences');
 const presencesController = require('./../controller/presences');
 
-Router.post('/createPresences', (req, res) => {
+Router.post('/createPresences', passport.authenticate('jwt', {session: false}), (req, res) => {
     actionPresencesController.createPresences(req, res);
 });
-Router.get('/getPresences/:id', (req, res) => {
+Router.get('/getPresences/:id', passport.authenticate('jwt', {session: false}), (req, res) => {
     presencesController.getPresences(req, res);
+});
+Router.put('/editPresenceMember', passport.authenticate('jwt', {session: false}), (req, res) => {
+    actionPresencesController.editPresenceMember(req, res);
 });
 module.exports = Router;

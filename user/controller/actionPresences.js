@@ -125,3 +125,48 @@ exports.createPresences = async (req, res) => {
         });
     }
 };
+exports.editPresenceMember = async (req, res) => {
+    const { idClass, memberCode, checkDate, status } = req.body;
+
+    const objEdit = {};
+    objEdit.memberCode = memberCode;
+    objEdit.checkDate = checkDate;
+    objEdit.status = status;
+
+    const checkDay = await CheckDate.findOne({idClass}).find({'dateList.date': { '$eq': checkDate }});
+    if(checkDay.length === 0)
+    {
+        return res.json({
+            isSuccess: false,
+            message: 'date not found'
+        });
+    }
+    const checkMember = await Classes.findById(idClass).find({'dssv.maSV': {'$eq': memberCode}});
+    if(checkMember.length === 0)
+    {
+        return res.json({
+            isSuccess: false,
+            message: 'Member not found in class'
+        });
+    }
+    const checkPresence = await Presences.findOne({idClass});
+    const check = checkPresence.presenceList.filter(item => item.memberCode === memberCode && item.checkDate === checkDate);
+    if(check.length !== 0)
+    {
+        return res.json({
+            isSuccess: false,
+            message: 'Member was present'
+        });
+    }
+    const updatedPresence = await Presences.updateOne({idClass}, { $push: { presenceList: objEdit }});
+    if(!updatedPresence)
+    {
+        return res.json({
+            isSuccess: false,
+            message: 'Update presence member fail'
+        });
+    }
+    return res.json({
+        isSuccess: true
+    });
+};
