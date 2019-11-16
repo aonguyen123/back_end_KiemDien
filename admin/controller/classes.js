@@ -68,7 +68,7 @@ exports.statisticalTotalClass = async (req, res) => {
     });
 };
 exports.statisticalTotalMember = async (req, res) => {
-    const lops = await Classes.find();
+    const lops = await Classes.find({status: true});
     let count = 0;
     if(lops.length !== 0)
     {

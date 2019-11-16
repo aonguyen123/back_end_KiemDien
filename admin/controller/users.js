@@ -10,17 +10,8 @@ exports.getUserConditionStatusTrue = async (req, res) => {
     return res.json(users);
 };
 exports.statisticalUserTotal = async (req, res) => {
-    let usersMonthCurrent = [], usersMonthLast = [];
-    const month = moment().format('MM');
-    const lastMonth = moment().subtract(1, 'month').format('MM');
-    const users = await User.find();
-    if(users.length !== 0)
-    {
-        usersMonthCurrent = users.filter(user => moment(user.createdAt).format('MM') === month);
-        usersMonthLast = users.filter(user => moment(user.createdAt).format('MM') === lastMonth);
-    }
+    const users = await User.find({status: {$in: [1, 2]}});
     return res.json({
-        usersMonthCurrent,
-        usersMonthLast
+        users
     });
 };

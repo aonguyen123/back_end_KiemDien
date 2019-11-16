@@ -13,5 +13,8 @@ Router.get('/getPresencesDetail', (req, res) => {
 Router.delete('/deletePresenceMember', passport.authorize('admin-authz', {session: false}), (req, res) => {
     actionPresencesController.deletePresenceMember(req, res);
 });
+Router.get('/getPresences', (req, res) => {
+    presencesController.getPresences(req, res);
+});
 
 module.exports = Router;

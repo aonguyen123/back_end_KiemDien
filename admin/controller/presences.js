@@ -33,3 +33,9 @@ exports.getClassPresences = async (req, res) => {
     }    
     return res.json(classes);
 };
+exports.getPresences = async (req, res) => {
+    const presences = await Presences.find();
+    res.json({
+        presences
+    });
+};
