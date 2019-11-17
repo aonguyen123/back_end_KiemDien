@@ -2,6 +2,8 @@ const moment = require('moment');
 const mongoose = require('mongoose');
 const Classes = require('./../../model/classes');
 const User = require('./../../model/user');
+const Presences = require('./../../model/presences');
+const CheckDate = require('./../../model/checkDate');
 
 exports.getClasses = async (req, res) => {
     const classes = await Classes.find();
@@ -78,4 +80,54 @@ exports.statisticalTotalMember = async (req, res) => {
         }
     }
     return res.json(count);
+};
+exports.getClassesStatistical = async (req, res) => {
+    const lops = await Classes.find();
+    if(lops.length !== 0)
+    {
+        lops.map(async item => {
+            if(moment(item.thoigianketthuc).isBefore(moment().toISOString()) && item.status)
+            {
+                const updated = await Classes.findByIdAndUpdate(item._id, {status: false});
+                if(!updated) return ;
+            }
+        });
+    }
+
+    let idClass = [], classPresences = [];
+    const presences = await Presences.find();
+    const checkDates = await CheckDate.find();
+    if(presences.length !== 0)
+    {
+        presences.forEach(value => idClass.push(value.idClass));
+
+        classPresences = await Classes.find({_id: {$in: idClass}});
+        classPresences.forEach(lop => {
+            presences.forEach(item => {
+                if(lop._id.toString() === item.idClass)
+                {
+                    let arr = [];
+                    let obj = {};
+                    lop.dssv.forEach(sv => {
+                        item.presenceList.forEach(kd => {
+                            if(kd.memberCode === sv.maSV)
+                            {
+                                obj.date = kd.checkDate;
+                                obj.status = kd.status;
+                                arr.push(obj);
+                                obj = {};
+                            }
+                        });
+                        sv.set('checkDate', arr, {strict:false}); 
+                        arr = [];
+                        obj = {};
+                    });
+                }
+            });
+        });
+    }
+    return res.json({
+        classPresences,
+        checkDates
+    });
 };

@@ -20,6 +20,9 @@ Router.get('/statisticalTotalClass', (req, res) => {
 Router.get('/statisticalTotalMember', (req, res) => {
     classController.statisticalTotalMember(req, res);
 });
+Router.get('/getClassesStatisticalByPresences', (req, res) => {
+    classController.getClassesStatistical(req, res);
+});
 
 Router.post('/createClass', passport.authorize('admin-authz', {session: false}), (req, res) => {
     actionClassesController.createClass(req, res);
