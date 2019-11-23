@@ -7,5 +7,4 @@ Router.post('/register', (req, res) => {
 Router.post('/login', (req, res) => {
     adminController.login(req, res);
 });
-
 module.exports = Router;

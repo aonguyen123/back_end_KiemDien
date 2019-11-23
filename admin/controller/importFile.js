@@ -164,7 +164,7 @@ exports.importDssvClass = async (req, res) => {
                     async.eachSeries(dssv, function updateObject(obj, done) {
                         sinhvien.maSV = obj.mssv;
                         sinhvien.tenSV = obj.ten;
-                        sinhvien.ngaysinh = moment(obj.ngaysinh).format('DD/MM/YYYY');
+                        sinhvien.ngaysinh = moment(obj.ngaysinh, 'MM/DD/YYYY').format('DD/MM/YYYY');
                         sinhvien.gioitinh = obj.gioitinh === 'Nam' ? 'Nam' : 'Nữ';
                         Classes.updateMany({_id: fields._id}, {$push: {dssv: sinhvien}}, done);
                     }, function allDone(err) {

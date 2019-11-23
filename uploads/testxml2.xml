@@ -2,44 +2,44 @@
 <Dssv xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<Sv>
 		<mssv>3115410004</mssv>
-		<ten>nguyen duc ao</ten>
+		<ten>Nguyễn Đức Ảo</ten>
 		<ngaysinh>20/10/1999</ngaysinh>
 		<gioitinh>Nam</gioitinh>
 	</Sv>
 	<Sv>
 		<mssv>3115410092</mssv>
-		<ten>tran vi lap</ten>
+		<ten>Trần Vĩ Lập</ten>
 		<ngaysinh>21/11/1999</ngaysinh>
 		<gioitinh>Nam</gioitinh>
 	</Sv>
 	<Sv>
 		<mssv>3115410093</mssv>
-		<ten>truong tuan dieu</ten>
-		<ngaysinh>09/03/1990</ngaysinh>
+		<ten>Trương Tuấn Diệu</ten>
+		<ngaysinh>09/03/1997</ngaysinh>
 		<gioitinh>Nữ</gioitinh>
 	</Sv>
 	<Sv>
 		<mssv>3115410045</mssv>
-		<ten>phan hoang tuan</ten>
+		<ten>Phan Hoàng Tuấn</ten>
 		<ngaysinh>20/11/1998</ngaysinh>
 		<gioitinh>Nữ</gioitinh>
 	</Sv>
 	<Sv>
 		<mssv>3115410003</mssv>
-		<ten>sinh vien 1</ten>
-		<ngaysinh>22/12/1998</ngaysinh>
+		<ten>Sau Đại Huy</ten>
+		<ngaysinh>22/08/1998</ngaysinh>
 		<gioitinh>Nữ</gioitinh>
 	</Sv>
 	<Sv>
-		<mssv>3115619138</mssv>
-		<ten>sinh vien 2</ten>
+		<mssv>3115619130</mssv>
+		<ten>Phan An</ten>
 		<ngaysinh>15/05/1997</ngaysinh>
 		<gioitinh>Nam</gioitinh>
 	</Sv>
 	<Sv>
-		<mssv>3131313141</mssv>
-		<ten>sau dai huy</ten>
-		<ngaysinh>01/01/1991</ngaysinh>
+		<mssv>3115410009</mssv>
+		<ten>Phan Phúc</ten>
+		<ngaysinh>01/01/1995</ngaysinh>
 		<gioitinh>Nam</gioitinh>
 	</Sv>
 </Dssv>

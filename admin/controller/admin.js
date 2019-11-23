@@ -1,9 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
 const loginValid = require('../../validation/admin/login');
 const registerValid = require('../../validation/admin/register');
-
 const Admin = require('./../../model/admin');
 
 exports.register = async (req, res) => {
