@@ -18,13 +18,10 @@ exports.register = async (req, res) => {
         });
     }
     const newAdmin = new Admin({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
         email: req.body.email,
         password: req.body.password,
-        country: req.body.country,
+        country: 'Việt Nam',
         sdt: req.body.sdt,
-        city: req.body.city
     });
     const salt = await bcrypt.genSalt(10);
     if(!salt)

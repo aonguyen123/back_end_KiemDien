@@ -83,6 +83,18 @@ exports.uploadAvatar = async (req, res) => {
             {
                 return res.json({isSuccess: false, status: 'update fail' })
             }
+            const exists = await User.findById(fields.idUser);
+            if(exists)
+            {
+                if(exists.ngaysinh === '' || exists.avatar === '')
+                {
+                    await User.findByIdAndUpdate(fields.idUser, {status: 2});
+                }
+                else
+                {
+                    await User.findByIdAndUpdate(fields.idUser, {status: 1});
+                }
+            }
             res.json({
                 isSuccess: true,
                 fileName: fileName

@@ -4,11 +4,11 @@ const Schema = mongoose.Schema;
 const adminSchema = new Schema({
     firstName: {
         type: String,
-        required: true
+        default: ''
     },
     lastName: {
         type: String,
-        required: true
+        default: ''
     },
     email: {
         type: String,
@@ -24,7 +24,7 @@ const adminSchema = new Schema({
     },
     country: {
         type: String,
-        required: true
+        default: ''
     },
     sdt: {
         type: String,
@@ -32,7 +32,7 @@ const adminSchema = new Schema({
     },
     city: {
         type: String,
-        required: true
+        default: ''
     }
 });
 
